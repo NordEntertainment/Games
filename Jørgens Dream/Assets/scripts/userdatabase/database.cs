@@ -104,6 +104,7 @@ public class database : MonoBehaviour
 		if (w.error == null) {
 			if (w.text == "login-SUCCESS") {
 				print ("WOOOOOOOOOOOOOOO! ");
+				Application.LoadLevel ("Scene2");
 
 			} else
 				message += w.text;

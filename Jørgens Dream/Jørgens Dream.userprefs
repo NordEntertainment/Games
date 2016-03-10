@@ -1,14 +1,10 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\character\PlayerCharacter.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\character\BackButton.cs">
     <Files>
-      <File FileName="Assets\scripts\character\BaseCharacter.cs" Line="110" Column="57" />
-      <File FileName="Assets\scripts\character\PlayerCharacter.cs" Line="5" Column="2" />
-      <File FileName="Assets\scripts\character\BaseStat.cs" Line="11" Column="17" />
-      <File FileName="Assets\scripts\character\Attribute.cs" Line="16" Column="10" />
-      <File FileName="Assets\scripts\character\ModifiedStat.cs" Line="48" Column="1" />
-      <File FileName="Assets\scripts\character\Vital.cs" Line="27" Column="2" />
-      <File FileName="Assets\scripts\character\Skill.cs" Line="25" Column="17" />
+      <File FileName="Assets\scripts\userdatabase\database.cs" Line="107" Column="38" />
+      <File FileName="Assets\scripts\character\CreateChar.cs" Line="49" Column="32" />
+      <File FileName="Assets\scripts\character\BackButton.cs" Line="9" Column="36" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
