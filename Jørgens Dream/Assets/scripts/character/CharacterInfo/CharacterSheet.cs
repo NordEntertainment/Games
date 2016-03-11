@@ -6,20 +6,33 @@ public class CharacterSheet : MonoBehaviour
 {
 
 	public int Health;
+	//Spells på Actionbar
 
-	public Image CastBar;
+	//Spells i bobla
+	public Image CastBarTimer;
+	public GameObject BallLoc;
+	public Image PowerStrikeBall;
+	public Image FireBallBall;
+	public Text CurrentSpellText;
 
+	//Abilities Damage
 	public int AutoAttackDamage;
+	public int PowerStrikeDamage;
 	public int FireBallDamage;
 
+	//EnemyInfo
 	public GameObject EnemyNPC;
 	public Text EnemyNPChealth;
 
-	public bool aAttack;
-	public bool aAttackCastBar;
-	public bool Casting;
+	//Spells
+	public bool AutoAttack = false;
+	public bool PowerStrike = false;
+	public bool FireBall = false;
+	public bool casting = false;
+	public bool AutoCasting = false;
 
-	private float castbartime;
+
+	public float castbartime;
 
 
 	// Use this for initialization
@@ -27,14 +40,15 @@ public class CharacterSheet : MonoBehaviour
 	{
 
 		Health = 100;
-		AutoAttackDamage = 5;
-		FireBallDamage = 15;
-		aAttack = false;
-		Casting = false;
-		CastBar.fillAmount = 0;
+		AutoAttackDamage = 3;
+		PowerStrikeDamage = 10;
+		FireBallDamage = 20;
 		castbartime = 0f;
-		aAttackCastBar = false;
-	
+		FireBallBall.enabled = false;
+		PowerStrikeBall.enabled = false;
+
+		CastBarTimer.fillAmount = 0;
+		CurrentSpellText.text = "Attack";
 	}
 	
 	// Update is called once per frame
@@ -51,48 +65,72 @@ public class CharacterSheet : MonoBehaviour
 
 		if (Health >= 100)
 			Health = 100;
+
+		if (AutoAttack)
+			CurrentSpellText.text = "Auto Attack";
+		CastBarTimer.fillAmount -= 1f / castbartime * Time.deltaTime;
+
+		if (PowerStrike) {
+			//CurrentSpellText.text = "Power Strike";
+			PowerStrikeBall.enabled = true;
+			FireBallBall.enabled = false;
+			AutoAttack = false;
+			CancelInvoke ("AutoAttackInvoke");
+			CastBarTimer.fillAmount -= 1f / castbartime * Time.deltaTime;
+
+		} else if (!PowerStrike)
+			PowerStrikeBall.enabled = false;
 		
-		if (aAttackCastBar)
-			CastBar.fillAmount += 1f / castbartime * Time.deltaTime;
-		if (Casting)
-			CastBar.fillAmount += 1f / castbartime * Time.deltaTime;
+		if (FireBall) {
+			//CurrentSpellText.text = "Fire Ball";
+			PowerStrikeBall.enabled = false;
+			FireBallBall.enabled = true;
+			AutoAttack = false;
+			CancelInvoke ("AutoAttackInvoke");
+			CastBarTimer.fillAmount -= 1f / castbartime * Time.deltaTime;
+		} else if (!FireBall)
+			FireBallBall.enabled = false;
+		
 	
 	}
 
-	public void DoDamage ()
+	public void AutoAttackSpell ()
 	{
-		
-		if (!aAttack)
-			aAttack = true;
-		if (aAttack)
-			Health -= AutoAttackDamage;
-		CastBar.fillAmount = 0;
-		
+		if (!casting) {
+			if (!AutoCasting) {
+				if (!AutoAttack)
+					AutoAttack = true;
+				if (AutoAttack) {
+					CastBarTimer.fillAmount = 1;
+					castbartime = 2f;
+					InvokeRepeating ("AutoAttackInvoke", 2f, 2f);
+				}
+			}
 
-
+		}
 	}
 
-	public void Autoattack ()
+	public void AutoAttackInvoke ()
 	{
-		if (aAttackCastBar) {
-			CastBar.fillAmount = 0;
-			aAttackCastBar = false;
-		}
-		if (!aAttackCastBar)
-			aAttackCastBar = true;
-		
-		if (!aAttack) {
+		CastBarTimer.fillAmount = 1;
+		Health -= AutoAttackDamage;
+		AutoCasting = true;
+	}
+
+	public void PowerStrikeSpell ()
+	{
+		if (!casting) {
+			CastBarTimer.fillAmount = 1;
+			StartCoroutine (PowerStrikeSpellTimer ());
+			PowerStrike = true;
 			castbartime = 3f;
-			InvokeRepeating ("DoDamage", 3f, 3f);
-
-
+			if (AutoCasting) {
+				AutoAttack = false;
+				AutoCasting = false;
+			}
+				
+				
 		}
-		if (aAttack) {
-			aAttack = false;
-			CancelInvoke ("DoDamage");
-			CastBar.fillAmount = 0;
-		}
-
 	}
 
 	public void HealthPotion ()
@@ -103,16 +141,37 @@ public class CharacterSheet : MonoBehaviour
 
 	public void FireBallSpell ()
 	{
-		StartCoroutine (FireBall ());
-		Casting = true;
-		castbartime = 5f;
+		if (!casting) {
+			CastBarTimer.fillAmount = 1;
+			StartCoroutine (FireBallSpellTimer ());
+			FireBall = true;
+			castbartime = 5f;
+			if (AutoCasting) {
+				AutoAttack = false;
+				AutoCasting = false;
+			}
+		
+				
+		}
 	}
 
-	IEnumerator FireBall ()
+	IEnumerator FireBallSpellTimer ()
 	{
-
+		casting = true;
 		yield return new WaitForSeconds (5);
 		Health -= FireBallDamage;
-		CastBar.fillAmount = 0;
+		FireBall = false;
+		casting = false;
+		//CurrentSpellText.text = "Attack";
+	}
+
+	IEnumerator PowerStrikeSpellTimer ()
+	{
+		casting = true;
+		yield return new WaitForSeconds (3);
+		Health -= PowerStrikeDamage;
+		casting = false;
+		PowerStrike = false;
+		//CurrentSpellText.text = "Attack";
 	}
 }

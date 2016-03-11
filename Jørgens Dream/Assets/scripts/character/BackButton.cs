@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class BackButton : MonoBehaviour
 {
 
 	public void GoBack ()
 	{
-		Application.LoadLevel ("Scene2");
+		SceneManager.LoadScene ("Scene2");
 	}
 }
