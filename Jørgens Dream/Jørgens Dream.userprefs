@@ -2,10 +2,10 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\character\CharacterInfo\CharacterSheet.cs">
     <Files>
-      <File FileName="Assets\scripts\character\CharacterInfo\CharacterSheet.cs" Line="70" Column="3" />
-      <File FileName="Assets\scripts\userdatabase\database.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\character\CharacterInfo\CharacterSheet.cs" Line="74" Column="6" />
+      <File FileName="Assets\scripts\userdatabase\database.cs" Line="7" Column="1" />
       <File FileName="Assets\scripts\character\CreateChar.cs" Line="1" Column="1" />
-      <File FileName="Assets\scripts\character\BackButton.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\character\BackButton.cs" Line="10" Column="25" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
