@@ -50,6 +50,7 @@
      <Compile Include="Assets\scripts\character\CreateChar.cs" />
      <Compile Include="Assets\scripts\character\LoadCharacter.cs" />
      <Compile Include="Assets\scripts\userdatabase\database.cs" />
+     <None Include="Assets\materials\images\Spritesheet\uipack_rpg_sheet.xml" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
