@@ -68,26 +68,28 @@ public class CharacterSheet : MonoBehaviour
 
 		if (AutoAttack)
 			CurrentSpellText.text = "Auto Attack";
-		CastBarTimer.fillAmount -= 1f / castbartime * Time.deltaTime;
+		    CastBarTimer.fillAmount -= 1f / castbartime * Time.deltaTime;
 
 		if (PowerStrike) {
-			//CurrentSpellText.text = "Power Strike";
-			PowerStrikeBall.enabled = true;
+            CurrentSpellText.text = "Power Strike";
+            PowerStrikeBall.enabled = true;
 			FireBallBall.enabled = false;
 			AutoAttack = false;
 			CancelInvoke ("AutoAttackInvoke");
-			CastBarTimer.fillAmount -= 1f / castbartime * Time.deltaTime;
+            
+       
 
-		} else if (!PowerStrike)
+
+        } else if (!PowerStrike)
 			PowerStrikeBall.enabled = false;
 		
 		if (FireBall) {
-			//CurrentSpellText.text = "Fire Ball";
+			CurrentSpellText.text = "Fire Ball";
 			PowerStrikeBall.enabled = false;
 			FireBallBall.enabled = true;
 			AutoAttack = false;
 			CancelInvoke ("AutoAttackInvoke");
-			CastBarTimer.fillAmount -= 1f / castbartime * Time.deltaTime;
+			
 		} else if (!FireBall)
 			FireBallBall.enabled = false;
 		
@@ -97,41 +99,86 @@ public class CharacterSheet : MonoBehaviour
 	public void AutoAttackSpell ()
 	{
 		if (!casting) {
-			if (!AutoCasting) {
-				if (!AutoAttack)
-					AutoAttack = true;
-				if (AutoAttack) {
-					CastBarTimer.fillAmount = 1;
-					castbartime = 2f;
-					InvokeRepeating ("AutoAttackInvoke", 2f, 2f);
-				}
-			}
+			
+                if (!AutoAttack) { 
+                    AutoAttack = true;
+                CastBarTimer.fillAmount = 1;
+                castbartime = 2f;
+                InvokeRepeating("AutoAttackInvoke", 2f, 2f);
+                }
+            
+        
+            else if (AutoAttack)
+        {
+            AutoAttack = false;
+            CancelInvoke("AutoAttackInvoke");
+                CastBarTimer.fillAmount = 0;
+            //  AutoCasting = false;
 
-		}
-	}
+
+        }
+
+        }
+
+        else if (FireBall)
+        {
+            if (casting)
+
+                FireBall = false;
+            casting = false;
+            CastBarTimer.fillAmount = 0;
+
+        }
+
+        else if (PowerStrike)
+        {
+            if (casting)
+                PowerStrike = false;
+            casting = false;
+            CastBarTimer.fillAmount = 0;
+
+        }
+
+
+    }
+
+    
 
 	public void AutoAttackInvoke ()
 	{
 		CastBarTimer.fillAmount = 1;
 		Health -= AutoAttackDamage;
-		AutoCasting = true;
+		//AutoCasting = true;
 	}
 
-	public void PowerStrikeSpell ()
-	{
-		if (!casting) {
-			CastBarTimer.fillAmount = 1;
-			StartCoroutine (PowerStrikeSpellTimer ());
-			PowerStrike = true;
-			castbartime = 3f;
-			if (AutoCasting) {
-				AutoAttack = false;
-				AutoCasting = false;
-			}
-				
-				
-		}
-	}
+    public void PowerStrikeSpell()
+    {
+        if (!casting)
+        {
+            CastBarTimer.fillAmount = 1;
+            PowerStrike = true;
+            castbartime = 3f;
+            StartCoroutine(PowerStrikeSpellTimer());
+
+            if (AutoCasting)
+            {
+                AutoAttack = false;
+                AutoCasting = false;
+            }
+
+
+
+        }
+
+        else if (PowerStrike)
+        {
+            if (casting)
+                PowerStrike = false;
+            casting = false;
+            CastBarTimer.fillAmount = 0;
+
+        }
+    }
 
 	public void HealthPotion ()
 	{
@@ -143,35 +190,48 @@ public class CharacterSheet : MonoBehaviour
 	{
 		if (!casting) {
 			CastBarTimer.fillAmount = 1;
-			StartCoroutine (FireBallSpellTimer ());
-			FireBall = true;
-			castbartime = 5f;
-			if (AutoCasting) {
-				AutoAttack = false;
-				AutoCasting = false;
-			}
-		
-				
-		}
-	}
+            castbartime = 5f;
+            FireBall = true;
+            StartCoroutine (FireBallSpellTimer ());
+            if (AutoCasting)
+            {
+                AutoAttack = false;
+                AutoCasting = false;
+            }
+
+
+
+        }
+        else if (FireBall)
+        {
+            if (casting)
+
+                FireBall = false;
+            casting = false;
+            CastBarTimer.fillAmount = 0;
+
+        }
+    }
 
 	IEnumerator FireBallSpellTimer ()
 	{
 		casting = true;
-		yield return new WaitForSeconds (5);
+        CastBarTimer.fillAmount += 1f / castbartime * Time.deltaTime;
+        yield return new WaitForSeconds (5);
 		Health -= FireBallDamage;
 		FireBall = false;
 		casting = false;
-		//CurrentSpellText.text = "Attack";
+		CurrentSpellText.text = "Attack";
 	}
 
 	IEnumerator PowerStrikeSpellTimer ()
 	{
 		casting = true;
-		yield return new WaitForSeconds (3);
+        CastBarTimer.fillAmount += 1f / castbartime * Time.deltaTime;
+        yield return new WaitForSeconds (3);
 		Health -= PowerStrikeDamage;
 		casting = false;
 		PowerStrike = false;
-		//CurrentSpellText.text = "Attack";
+		CurrentSpellText.text = "Attack";
 	}
 }
